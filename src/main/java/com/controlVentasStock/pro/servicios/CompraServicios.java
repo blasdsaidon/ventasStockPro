@@ -26,25 +26,41 @@ public class CompraServicios {
     @Autowired
 private CompraRepo compraRepo;
     @Transactional
-    public void crearCompra(String proveedor, Double costo, String metodoPago, 
-            Integer cantidad, String detalle){
-       
-        LocalDateTime fechaActual = LocalDateTime.now();
-        
-         
-        
-        Compra compra = new Compra();
-        
-        compra.setCantidad(cantidad);
-        compra.setCosto(costo);
-        compra.setDetalle(detalle);
-        compra.setMetodoPago(metodoPago);
-        compra.setProveedor(proveedor);
-        compra.setFecha(fechaActual);
-        
-        compraRepo.save(compra);
-        
+public void crearCompra(String proveedor, Double costo, String metodoPago, 
+                        Integer cantidad, String detalle) {
+    // Validación de campos requeridos
+    if (proveedor == null || proveedor.trim().isEmpty()) {
+        throw new IllegalArgumentException("El proveedor no puede ser nulo o vacío");
     }
+    if (costo == null || costo <= 0) {
+        throw new IllegalArgumentException("El costo debe ser mayor a 0 y no puede ser nulo");
+    }
+    if (metodoPago == null || metodoPago.trim().isEmpty()) {
+        throw new IllegalArgumentException("El método de pago no puede ser nulo o vacío");
+    }
+    if (cantidad == null || cantidad <= 0) {
+        throw new IllegalArgumentException("La cantidad debe ser mayor a 0 y no puede ser nula");
+    }
+    if (detalle == null || detalle.trim().isEmpty()) {
+        throw new IllegalArgumentException("El detalle no puede ser nulo o vacío");
+    }
+
+    // Obtenemos la fecha actual
+    LocalDateTime fechaActual = LocalDateTime.now();
+
+    // Creamos la instancia de Compra
+    Compra compra = new Compra();
+    compra.setCantidad(cantidad);
+    compra.setCosto(costo);
+    compra.setDetalle(detalle);
+    compra.setMetodoPago(metodoPago);
+    compra.setProveedor(proveedor);
+    compra.setFecha(fechaActual);
+
+    // Guardamos la compra en la base de datos
+    compraRepo.save(compra);
+}
+
     
       public List<Compra> verComprasDeHoy(){
         

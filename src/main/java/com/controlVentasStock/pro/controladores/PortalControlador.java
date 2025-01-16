@@ -41,14 +41,17 @@ public class PortalControlador {
     }
     
     @PostMapping("/crearOrden")
-    public ResponseEntity<String> crearOrden(String nombre, String menu, Double bebida, String metodoPago, Integer cantidad, 
+    public ResponseEntity<String> crearOrden( String nombre, String menu, Double bebida, String metodoPago, Integer cantidad, 
             String hora, Double costoEnvio, Double costoMenu, Double total){
-        System.out.println("bebida");
-        System.out.println(bebida);
+        try{
         ordenServicio.crearOrden(nombre, menu, bebida, metodoPago, cantidad, hora, costoEnvio, costoMenu,total );
         
         return ResponseEntity.status(HttpStatus.CREATED).body("Orden creada");
-        
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error inesperado: " + e.getMessage());
+        }
         
     }
     
@@ -81,10 +84,17 @@ public class PortalControlador {
     @PostMapping("/crearCompra")
     public ResponseEntity<String> crearCompra(String proveedor, Double costo,
             String metodoPago, Integer cantidad, String detalle){
+        try {
+            compraServicio.crearCompra(proveedor, costo, metodoPago, cantidad, detalle);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Compra creada");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error inesperado: " + e.getMessage());
+        }
         
-        compraServicio.crearCompra(proveedor, costo, metodoPago, cantidad, detalle);
         
-        return ResponseEntity.status(HttpStatus.CREATED).body("Compra creada");
+        
         
     }
     

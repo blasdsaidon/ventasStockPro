@@ -41,9 +41,38 @@ private OrdenRepo ordenRepo;
     public void crearOrden(String nombre, String menu, Double bebida, String metodoPago, Integer cantidad, 
             String hora, Double costoEnvio, Double costoMenu, Double total){
         
+         if (nombre == null || nombre.trim().isEmpty()) {
+        throw new IllegalArgumentException("El nombre no puede ser nulo o vacío");
+    }
+         if (menu == null || menu.trim().isEmpty()) {
+        throw new IllegalArgumentException("El menu no puede ser nulo o vacío");
+    }
+       if (bebida == null || bebida <= 0) {
+        throw new IllegalArgumentException("Bebida debe ser mayor a 0 y no puede ser nula");
+    } 
+           if (metodoPago == null || metodoPago.trim().isEmpty()) {
+        throw new IllegalArgumentException("El metodo de pago no puede ser nulo o vacío");
+    }
+       if (cantidad == null || cantidad <= 0) {
+        throw new IllegalArgumentException("La cantidad debe ser mayor a 0 y no puede ser nula");
+    } 
+          if (hora == null || hora.trim().isEmpty()) {
+        throw new IllegalArgumentException("La hora no puede ser nula o vacía");
+    }
+        if (costoEnvio == null || costoEnvio <= 0) {
+        throw new IllegalArgumentException("El costo de envío debe ser mayor a 0 y no puede ser nulo");   
+    }   
+       if (costoMenu == null || costoMenu <= 0) {
+        throw new IllegalArgumentException("El costo del menú debe ser mayor a 0 y no puede ser nulo");   
+    }    
+       if (total == null || total <= 0) {
+        throw new IllegalArgumentException("El total debe ser mayor a 0 y no puede ser nulo");   
+    }   
+      
+      
+       
         LocalDateTime fechaActual = LocalDateTime.now();
         
-         
         
         Orden orden = new Orden();
         
@@ -58,6 +87,7 @@ private OrdenRepo ordenRepo;
         orden.setCostoMenu(costoMenu);
         orden.setFecha(fechaActual);
         
+        System.out.println(orden.toString());
         
         ordenRepo.save(orden);
 
